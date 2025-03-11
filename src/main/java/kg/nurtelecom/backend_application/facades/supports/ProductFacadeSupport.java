@@ -78,8 +78,7 @@ class ProductFacadeSupport implements ProductFacade {
             Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
             return fileName;
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed save product's image" + e);
         }
     }
 

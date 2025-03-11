@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создание заказа</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="my-4">Выбор продуктов для заказа</h1>
+    <form th:action="@{/admin/orders/create}" method="post">
+        <table class="table table-bordered">
+            <thead class="thead-light">
+            <tr>
+                <th>Выбрать</th>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Цена</th>
+                <th>Остаток</th>
+                <th>Тип продукта</th>
+                <th>Изображение</th>
+                <th>Количество</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product, iter : ${products}">
+                <td>
+                    <input type="checkbox"
+                           th:name="'orderItemsRequests[' + ${iter.index} + '].productId'"
+                           th:value="${product.id}"
+                           data-index="${iter.index}">
+                    <input type="hidden"
+                           th:name="'orderItemsRequests[' + ${iter.index} + '].price'"
+                           th:value="${product.price}">
+                </td>
+                <td th:text="${product.name}">Название продукта</td>
+                <td th:text="${product.description}">Описание продукта</td>
+                <td th:text="${product.price}">100.00</td>
+                <td th:text="${product.stock}">10</td>
+                <td th:text="${product.productType}">Телефоны</td>
+                <td>
+                    <img th:src="@{'/uploads?filename=' + ${product.imageUrl}}"
+                         alt="Изображение" style="width: 100px; height: 100px;">
+                </td>
+                <td>
+                    <input type="number"
+                           th:name="'orderItemsRequests[' + ${iter.index} + '].quantity'"
+                           value="1" min="1"
+                           class="form-control" style="width: 80px;">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Адрес доставки -->
+        <div class="form-group mb-3">
+            <label>Адрес доставки:</label>
+            <input type="text"
+                   th:field="*{deliveryAddress}"
+                   class="form-control"
+                   placeholder="Укажите адрес" required>
+        </div>
+
+        <div class="form-check">
+            <input type="checkbox"
+                   th:field="*{isDelivered}"
+                   class="form-check-input"
+                   id="create-delivered">
+            <label class="form-check-label" for="create-delivered">Заказ уже доставлен</label>
+        </div>
+
+        <button type="submit" class="btn btn-success">Создать заказ</button>
+    </form>
+</div>
+</body>
+</html>
