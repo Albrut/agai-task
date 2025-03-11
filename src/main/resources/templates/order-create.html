@@ -1,26 +1,26 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Создание заказа</title>
+    <title>Create Order</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container">
-    <h1 class="my-4">Выбор продуктов для заказа</h1>
+    <h1 class="my-4">Select Products for Order</h1>
     <form th:action="@{/admin/orders/create}" method="post">
         <table class="table table-bordered">
             <thead class="thead-light">
             <tr>
-                <th>Выбрать</th>
-                <th>Название</th>
-                <th>Описание</th>
-                <th>Цена</th>
-                <th>Остаток</th>
-                <th>Тип продукта</th>
-                <th>Изображение</th>
-                <th>Количество</th>
+                <th>Select</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Product Type</th>
+                <th>Image</th>
+                <th>Quantity</th>
             </tr>
             </thead>
             <tbody>
@@ -34,14 +34,14 @@
                            th:name="'orderItemsRequests[' + ${iter.index} + '].price'"
                            th:value="${product.price}">
                 </td>
-                <td th:text="${product.name}">Название продукта</td>
-                <td th:text="${product.description}">Описание продукта</td>
-                <td th:text="${product.price}">100.00</td>
+                <td th:text="${product.name}">Product Name</td>
+                <td th:text="${product.description}">Product Description</td>
+                <td th:text="${product.price}">$100.00</td>
                 <td th:text="${product.stock}">10</td>
-                <td th:text="${product.productType}">Телефоны</td>
+                <td th:text="${product.productType}">Phones</td>
                 <td>
                     <img th:src="@{'/uploads?filename=' + ${product.imageUrl}}"
-                         alt="Изображение" style="width: 100px; height: 100px;">
+                         alt="Image" style="width: 100px; height: 100px;">
                 </td>
                 <td>
                     <input type="number"
@@ -53,13 +53,12 @@
             </tbody>
         </table>
 
-        <!-- Адрес доставки -->
         <div class="form-group mb-3">
-            <label>Адрес доставки:</label>
+            <label>Delivery Address:</label>
             <input type="text"
                    th:field="*{deliveryAddress}"
                    class="form-control"
-                   placeholder="Укажите адрес" required>
+                   placeholder="Enter address" required>
         </div>
 
         <div class="form-check">
@@ -67,10 +66,10 @@
                    th:field="*{isDelivered}"
                    class="form-check-input"
                    id="create-delivered">
-            <label class="form-check-label" for="create-delivered">Заказ уже доставлен</label>
+            <label class="form-check-label" for="create-delivered">Order already delivered</label>
         </div>
 
-        <button type="submit" class="btn btn-success">Создать заказ</button>
+        <button type="submit" class="btn btn-success">Create Order</button>
     </form>
 </div>
 </body>

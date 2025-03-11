@@ -8,6 +8,7 @@ public record OrderResponse(
         BigDecimal totalAmount,
         UUID userId,
         Boolean isDelivered,
-        String deliveryAddress
+        String deliveryAddress,
+        String usernameOfOwner
 ) {
 }

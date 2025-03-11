@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.Collections;
 
 @Controller
 @RequestMapping("/admin/orders")
@@ -79,7 +81,7 @@ public class OrderController {
                               @ModelAttribute("orderDetails") OrderDetailsRequest orderDetails
     ) {
         List<OrderItemsRequest> requests = new ArrayList<>();
-        List<OrderItemsResponse> orderItems = orderDetails.orderItems();
+        List<OrderItemsResponse> orderItems = Optional.ofNullable(orderDetails.orderItems()).orElse(Collections.emptyList());
 
         for (OrderItemsResponse item : orderItems) {
             OrderItemsRequest request = new OrderItemsRequest();

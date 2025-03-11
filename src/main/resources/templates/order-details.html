@@ -1,52 +1,51 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Детали заказа</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 <div class="container">
-  <h1 class="my-4">Детали заказа</h1>
+    <h1 class="my-4">Order Details</h1>
 
-  <div class="mb-3">
-    <h2>Информация о заказе</h2>
-    <p>Номер заказа: <span th:text="${order.id}">Order ID</span></p>
-    <p>Пользователь: <span th:text="${order.userId}">User</span></p>
-    <p>Сумма заказа: <span th:text="${order.totalAmount}">Total</span></p>
+    <div class="mb-3">
+        <h2>Order Information</h2>
+        <p>Order ID: <span th:text="${order.id}">Order ID</span></p>
+        <p>User: <span th:text="${order.usernameOfOwner}">Username</span></p>
+        <p>Total Amount: <span th:text="${order.totalAmount}">$Total</span></p>
 
-    <!-- Адрес доставки -->
-    <p>
-      <strong>Адрес доставки:</strong>
-      <span th:text="${order.deliveryAddress}">Скичик, 12</span>
-    </p>
+        <p>
+            <strong>Delivery Address:</strong>
+            <span th:text="${order.deliveryAddress}">Skichik, 12</span>
+        </p>
 
-    <p>Статус заказа:
-      <span th:if="${order.isDelivered}" th:text="Доставлен">✅</span>
-      <span th:if="${!order.isDelivered}" th:text="В пути">⚠️</span>
-    </p>
-  </div>
+        <p>Order Status:
+            <span th:if="${order.isDelivered}" th:text="Delivered"></span>
+            <span th:if="${!order.isDelivered}" th:text="In Transit">️</span>
+        </p>
+    </div>
 
-  <h2>Позиции заказа</h2>
-  <table class="table table-bordered">
-    <thead class="thead-light">
-    <tr>
-      <th>Продукт</th>
-      <th>Количество</th>
-      <th>Цена</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="item : ${orderItems}">
-      <td th:text="${item.productId}">Product ID</td>
-      <td th:text="${item.quantity}">3</td>
-      <td th:text="${item.price}">99.99</td>
-    </tr>
-    </tbody>
-  </table>
+    <h2>Order Items</h2>
+    <table class="table table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${orderItems}">
+            <td th:text="${item.productId}">Product ID</td>
+            <td th:text="${item.quantity}">3</td>
+            <td th:text="${item.price}">$99.99</td>
+        </tr>
+        </tbody>
+    </table>
 
-  <a href="/admin/orders" class="btn btn-secondary">Назад</a>
+    <a href="/admin/orders" class="btn btn-secondary">Back</a>
 </div>
 </body>
 </html>

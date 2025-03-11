@@ -6,7 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderItemsRequestsDTO {
+
+    @NotEmpty
+    private String usernameOfOwner;
+
+    @NotEmpty
     private String deliveryAddress;
+
     private boolean isDelivered = false;
 
     @NotEmpty
@@ -36,10 +42,19 @@ public class OrderItemsRequestsDTO {
         this.deliveryAddress = deliveryAddress;
     }
 
+    public String getUsernameOfOwner() {
+        return usernameOfOwner;
+    }
+
+    public void setUsernameOfOwner(String usernameOfOwner) {
+        this.usernameOfOwner = usernameOfOwner;
+    }
+
     @Override
     public String toString() {
         return "OrderItemsRequestsDTO{" +
-                "deliveryAddress='" + deliveryAddress + '\'' +
+                "usernameOfOwner='" + usernameOfOwner + '\'' +
+                ", deliveryAddress='" + deliveryAddress + '\'' +
                 ", isDelivered=" + isDelivered +
                 ", orderItemsRequests=" + orderItemsRequests +
                 '}';

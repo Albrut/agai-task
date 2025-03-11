@@ -20,8 +20,18 @@ public class OrderRepository implements OrderService {
 
     private final static String CREATE_ORDER_QUERY = "INSERT INTO orders (total_amount, user_id, is_delivered, delivery_address) VALUES (?, ?, ?, ?) RETURNING order_id";
     private final static String DELETE_ORDER_BY_ID_QUERY = "DELETE FROM orders WHERE order_id = ?";
-    private final static String GET_ALL_ORDERS_QUERY = "SELECT * FROM orders";
-    private final static String GET_ORDER_BY_ID_QUERY = "SELECT * FROM orders WHERE order_id = ?";
+
+    private final static String GET_ALL_ORDERS_QUERY =
+            "SELECT o.order_id, o.total_amount, o.user_id, o.is_delivered, o.delivery_address, u.username AS usernameOfOwner " +
+                    "FROM orders o " +
+                    "LEFT JOIN users u ON o.user_id = u.user_id";
+
+    private final static String GET_ORDER_BY_ID_QUERY =
+            "SELECT o.order_id, o.total_amount, o.user_id, o.is_delivered, o.delivery_address, u.username AS usernameOfOwner " +
+                    "FROM orders o " +
+                    "LEFT JOIN users u ON o.user_id = u.user_id " +
+                    "WHERE o.order_id = ?";
+
     private final static String GET_ORDER_ITEMS_BY_ORDER_ID_QUERY = "SELECT * FROM order_items WHERE order_id = ?";
     private final static String SEARCH_ORDERS_BY_USER_ID_QUERY = "SELECT * FROM orders WHERE user_id = ?";
     private final static String DELETE_ORDER_ITEMS_BY_ORDER_ID_QUERY = "DELETE FROM order_items WHERE order_id = ?";

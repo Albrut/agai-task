@@ -2,7 +2,7 @@ package kg.nurtelecom.backend_application.controllers.spring_mvc;
 
 import jakarta.validation.Valid;
 import kg.nurtelecom.backend_application.payload.requests.UserSaveRequestForm;
-import kg.nurtelecom.backend_application.services.SaveUserToBdService;
+import kg.nurtelecom.backend_application.services.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.http.HttpStatus;
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/registration")
 public class RegisterController {
-    private final SaveUserToBdService saveUserToBdService;
+    private final UserService userService;
 
-    public RegisterController(SaveUserToBdService saveUserToBdService) {
-        this.saveUserToBdService = saveUserToBdService;
+    public RegisterController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
@@ -30,7 +30,7 @@ public class RegisterController {
 
     @PostMapping
     public ResponseEntity<UserSaveRequestForm> registerUser(@Valid @ModelAttribute UserSaveRequestForm userSaveRequestForm) {
-        saveUserToBdService.save(userSaveRequestForm);
+        userService.save(userSaveRequestForm);
         return ResponseEntity.status(HttpStatus.CREATED).body(userSaveRequestForm);
     }
 }
