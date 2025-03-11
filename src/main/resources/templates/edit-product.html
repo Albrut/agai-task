@@ -9,8 +9,8 @@
 <body>
 <div class="container">
   <h1 class="my-4">Edit Product</h1>
-
   <form th:action="@{/products/edit/{id}(id=${productRequestForm.id})}" method="post" enctype="multipart/form-data">
+
     <div class="form-group">
       <label for="name">Name</label>
       <input type="text" class="form-control" id="name" name="name" th:value="${productRequestForm.name}" required>
@@ -29,6 +29,15 @@
     <div class="form-group">
       <label for="stock">Stock</label>
       <input type="number" class="form-control" id="stock" name="stock" th:value="${productRequestForm.stock}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="productType">Product Type</label>
+      <select class="form-control" id="productType" name="productType" required>
+        <option th:selected="${productRequestForm.productType.name() == 'PHONES'}" th:value="PHONES">Phones</option>
+        <option th:selected="${productRequestForm.productType.name() == 'COMPUTERS'}" th:value="COMPUTERS">Computers</option>
+        <option th:selected="${productRequestForm.productType.name() == 'ACCESSORIES'}" th:value="ACCESSORIES">Accessories</option>
+      </select>
     </div>
 
     <div class="form-group">

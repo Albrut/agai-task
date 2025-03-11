@@ -3,6 +3,8 @@ package kg.nurtelecom.backend_application.payload.requests;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import kg.nurtelecom.backend_application.payload.requests.enums.ProductTypeEnum;
+
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -24,6 +26,9 @@ public class ProductRequestForm {
     @Positive(message = "Stock must be positive")
     private Integer stock;
 
+    @NotNull
+    private ProductTypeEnum productType;
+
 
     public UUID getId() {
         return id;
@@ -43,6 +48,14 @@ public class ProductRequestForm {
 
     public String getDescription() {
         return description;
+    }
+
+    public ProductTypeEnum getProductType() {
+        return productType;
+    }
+
+    public void setProductType(ProductTypeEnum productType) {
+        this.productType = productType;
     }
 
     public void setDescription(String description) {
@@ -76,11 +89,13 @@ public class ProductRequestForm {
     @Override
     public String toString() {
         return "ProductRequestForm{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", price=" + price +
                 ", stock=" + stock +
+                ", productType=" + productType +
                 '}';
     }
 }

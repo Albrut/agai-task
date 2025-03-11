@@ -20,6 +20,7 @@
             <th>Description</th>
             <th>Price</th>
             <th>Stock</th>
+            <th>Product Type</th>
             <th>Image</th>
             <th>Actions</th>
         </tr>
@@ -30,12 +31,12 @@
             <td th:text="${product.description}">Product Description</td>
             <td th:text="${product.price}">100.00</td>
             <td th:text="${product.stock}">10</td>
+            <td th:text="${product.productType}">Phones</td>
             <td>
                 <img th:src="@{'/uploads?filename=' + ${product.imageUrl}}" alt="Image" style="width: 100px; height: 100px;">
             </td>
             <td>
                 <a th:href="@{'/products/edit/' + ${product.id}}" class="btn btn-warning">Edit</a>
-
                 <form th:action="@{'/products/delete/' + ${product.id}}" method="post" class="d-inline">
                     <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
                 </form>

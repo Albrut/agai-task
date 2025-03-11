@@ -1,5 +1,6 @@
 package kg.nurtelecom.backend_application.mapper;
 
+import kg.nurtelecom.backend_application.payload.requests.enums.ProductTypeEnum;
 import kg.nurtelecom.backend_application.payload.responses.ProductResponse;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -17,6 +18,7 @@ public class ProductsRowMapper implements RowMapper<ProductResponse> {
                 rs.getString("description"),
                 rs.getBigDecimal("price"),
                 rs.getInt("stock"),
+                ProductTypeEnum.valueOf(rs.getString("product_type")),
                 rs.getString("image_url")
         );
     }

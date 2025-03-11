@@ -36,6 +36,16 @@
         </div>
 
         <div class="form-group">
+            <label for="productType">Product Type</label>
+            <select th:field="*{productType}" id="productType" class="form-control" required>
+                <option th:value="PHONES" th:text="'Phones'">Phones</option>
+                <option th:value="COMPUTERS" th:text="'Computers'">Computers</option>
+                <option th:value="ACCESSORIES" th:text="'Accessories'">Accessories</option>
+            </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('productType')}" th:errors="*{productType}"></div>
+        </div>
+
+        <div class="form-group">
             <label for="imageFile">Product Image</label>
             <input type="file" id="imageFile" name="imageFile" class="form-control" required>
         </div>

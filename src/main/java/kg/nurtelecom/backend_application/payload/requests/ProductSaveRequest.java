@@ -3,6 +3,7 @@ package kg.nurtelecom.backend_application.payload.requests;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import kg.nurtelecom.backend_application.payload.requests.enums.ProductTypeEnum;
 
 import java.math.BigDecimal;
 
@@ -22,6 +23,8 @@ public class ProductSaveRequest {
     @Positive(message = "Stock must be positive")
     private Integer stock;
 
+    @NotNull
+    private ProductTypeEnum productType;
 
 
     public String getName() {
@@ -48,6 +51,14 @@ public class ProductSaveRequest {
         this.imageUrl = imageUrl;
     }
 
+    public ProductTypeEnum getProductType() {
+        return productType;
+    }
+
+    public void setProductType(ProductTypeEnum productType) {
+        this.productType = productType;
+    }
+
     public BigDecimal getPrice() {
         return price;
     }
@@ -66,12 +77,13 @@ public class ProductSaveRequest {
 
     @Override
     public String toString() {
-        return "ProductRequestForm{" +
+        return "ProductSaveRequest{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", price=" + price +
                 ", stock=" + stock +
+                ", productType=" + productType +
                 '}';
     }
 }
