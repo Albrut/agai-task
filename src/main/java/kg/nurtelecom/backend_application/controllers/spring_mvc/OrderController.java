@@ -18,12 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-
 import java.math.BigDecimal;
 import java.util.UUID;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.Collections;
 
 @Controller
@@ -72,31 +70,46 @@ public class OrderController {
         List<OrderItemsResponse> orderItems = orderService.getOrderItemsByOrderId(id);
         OrderDetailsRequest orderDetails = new OrderDetailsRequest(order, orderItems);
         model.addAttribute("orderDetails", orderDetails);
+        List<ProductResponse> products = productFacade.getAllProducts();
+        model.addAttribute("availableProducts", products);
         return "order-edit";
     }
 
     @PostMapping("/edit/{id}")
-    public String updateOrder(@Valid
+    public String updateOrder(
             @PathVariable UUID id,
-                              @ModelAttribute("orderDetails") OrderDetailsRequest orderDetails
+            @Valid @ModelAttribute("orderDetails") OrderDetailsRequest orderDetails
     ) {
         List<OrderItemsRequest> requests = new ArrayList<>();
-        List<OrderItemsResponse> orderItems = Optional.ofNullable(orderDetails.orderItems()).orElse(Collections.emptyList());
+
+        List<OrderItemsResponse> orderItems;
+        if (orderDetails.orderItems() != null) {
+            orderItems = orderDetails.orderItems();
+        } else {
+            orderItems = Collections.emptyList();
+        }
 
         for (OrderItemsResponse item : orderItems) {
+            if (item == null) {
+                continue;
+            }
             OrderItemsRequest request = new OrderItemsRequest();
             request.setId(item.orderItemId());
-            request.setOrderId(id);
             request.setProductId(item.productId());
             request.setQuantity(item.quantity());
             request.setPrice(item.price());
             requests.add(request);
         }
 
-        orderService.updateOrderById(id, requests,orderDetails.order().isDelivered(), orderDetails.order().deliveryAddress());
+        orderService.updateOrderById(
+                id,
+                requests,
+                orderDetails.order().isDelivered(),
+                orderDetails.order().deliveryAddress()
+        );
+
         return "redirect:/admin/orders";
     }
-
 
     @GetMapping("/create")
     public String getCreateOrderPage(Model model) {
@@ -105,9 +118,8 @@ public class OrderController {
         return "order-create";
     }
 
-
     @PostMapping("/create")
-    public String createOrder(@ModelAttribute OrderItemsRequestsDTO orderItemsDTO) {
+    public String createOrder(@Valid @ModelAttribute OrderItemsRequestsDTO orderItemsDTO) {
         List<OrderItemsRequest> orderItemsRequests = orderItemsDTO.getOrderItemsRequests();
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (OrderItemsRequest item : orderItemsRequests) {
@@ -120,5 +132,3 @@ public class OrderController {
         return "redirect:/admin/orders/edit/" + newOrderId;
     }
 }
-
-
