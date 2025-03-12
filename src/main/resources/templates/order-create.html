@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <h1 class="my-4">Select Products for Order</h1>
-    <form th:action="@{/admin/orders/create}" method="post">
+    <form th:action="@{/admin/orders/create}" th:object="${orderItemsDTO}" method="post">
         <table class="table table-bordered">
             <thead class="thead-light">
             <tr>
@@ -63,14 +63,27 @@
 
         <div class="form-check">
             <input type="checkbox"
-                   th:field="*{isDelivered}"
+                   th:checked="*{isDelivered}"
                    class="form-check-input"
-                   id="create-delivered">
-            <label class="form-check-label" for="create-delivered">Order already delivered</label>
+                   id="create-delivered"
+                   onclick="updateDeliveryLabel()">
+            <label class="form-check-label" for="create-delivered" id="delivery-label">Order not delivered</label>
         </div>
+
 
         <button type="submit" class="btn btn-success">Create Order</button>
     </form>
 </div>
+<script>
+    function updateDeliveryLabel() {
+        let checkbox = document.getElementById("create-delivered");
+        let label = document.getElementById("delivery-label");
+        label.textContent = checkbox.checked ? "Order already delivered" : "Order not delivered";
+    }
+
+    window.onload = updateDeliveryLabel;
+
+
+</script>
 </body>
 </html>

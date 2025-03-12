@@ -7,7 +7,6 @@ import java.util.List;
 
 public class OrderItemsRequestsDTO {
 
-    @NotEmpty
     private String usernameOfOwner;
 
     @NotEmpty

@@ -115,6 +115,7 @@ public class OrderController {
     public String getCreateOrderPage(Model model) {
         List<ProductResponse> products = productFacade.getAllProducts();
         model.addAttribute("products", products);
+        model.addAttribute("orderItemsDTO", new OrderItemsRequestsDTO());
         return "order-create";
     }
 
