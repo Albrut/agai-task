@@ -5,6 +5,7 @@ import kg.nurtelecom.backend_application.repositories.CustomUserDetailsRepositor
 import kg.nurtelecom.backend_application.security.filters.TimelineFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,25 +19,47 @@ import kg.nurtelecom.backend_application.security.filters.JwtAuthenticationFilte
 @Configuration
 public class SecurityConfig {
 
-    private final CustomUserDetailsRepository userDetailsRepository;
+    private final CustomUserDetailsRepository customUserDetailsRepository;
 
-    public SecurityConfig(CustomUserDetailsRepository userDetailsRepository) {
-        this.userDetailsRepository = userDetailsRepository;
+    public SecurityConfig(CustomUserDetailsRepository customUserDetailsRepository) {
+        this.customUserDetailsRepository = customUserDetailsRepository;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Order(1)
+    public SecurityFilterChain thymeleafSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .securityMatcher("/home", "/login", "/logout", "/registration", "/admin/**")
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register").permitAll()
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/registration").permitAll()
                         .anyRequest().authenticated()
-                );
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/home", true)
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login")
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                .csrf(csrf -> csrf.disable());
+        return http.build();
+    }
 
-        http.addFilterBefore(new JwtAuthenticationFilter(userDetailsRepository), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(new TimelineFilter(), JwtAuthenticationFilter.class);
-
+    @Bean
+    @Order(2)
+    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .securityMatcher("/api/**", "/register")
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(new JwtAuthenticationFilter(customUserDetailsRepository), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new TimelineFilter(), JwtAuthenticationFilter.class)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(csrf -> csrf.disable());
         return http.build();
     }
 
