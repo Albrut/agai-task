@@ -30,22 +30,31 @@ public class OrderRepository implements OrderService {
             "DELETE FROM order_items WHERE order_id = ? AND product_id = ?";
 
     private final static String GET_ALL_ORDERS_QUERY =
-            "SELECT o.order_id, o.total_amount, o.user_id, o.is_delivered, o.delivery_address, u.username AS usernameOfOwner " +
-                    "FROM orders o " +
-                    "LEFT JOIN users u ON o.user_id = u.user_id";
+            "SELECT orders.order_id, orders.total_amount, orders.user_id, orders.is_delivered, orders.delivery_address, " +
+                    "users.username AS username_of_owner " +
+                    "FROM orders " +
+                    "JOIN users ON orders.user_id = users.user_id ";
+
 
     private final static String GET_ORDER_BY_ID_QUERY =
-            "SELECT o.order_id, o.total_amount, o.user_id, o.is_delivered, o.delivery_address, u.username AS usernameOfOwner " +
-                    "FROM orders o " +
-                    "LEFT JOIN users u ON o.user_id = u.user_id " +
-                    "WHERE o.order_id = ?";
+            "SELECT orders.order_id, orders.total_amount, orders.user_id, orders.is_delivered, orders.delivery_address, users.username AS username_of_owner " +
+                    "FROM orders " +
+                    "LEFT JOIN users ON orders.user_id = users.user_id " +
+                    "WHERE orders.order_id = ?";
 
-    private final static String GET_ORDER_ITEMS_BY_ORDER_ID_QUERY = "SELECT * FROM order_items WHERE order_id = ?";
+    private final static String GET_ORDER_ITEMS_BY_ORDER_ID_QUERY =
+            "SELECT order_items.order_item_id, order_items.order_id, order_items.product_id, " +
+                    "order_items.quantity, order_items.price, products.name AS product_name " +
+                    "FROM order_items " +
+                    "JOIN products ON order_items.product_id = products.product_id " +
+                    "WHERE order_items.order_id = ?";
+
+
+
     private final static String SEARCH_ORDERS_BY_USER_ID_QUERY = "SELECT * FROM orders WHERE user_id = ?";
     private final static String INSERT_ORDER_ITEM_QUERY = "INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)";
     private final static String UPDATE_ORDER_TOTAL_QUERY = "UPDATE orders SET total_amount = ?, is_delivered = ?, delivery_address = ? WHERE order_id = ?";
     private final static String UPDATE_PRODUCT_STOCK_BY_ID_QUERY =     "UPDATE products SET stock = stock - ? WHERE product_id = ? AND stock >= ?";
-    ;
     private final JdbcTemplate jdbcTemplate;
 
     public OrderRepository(JdbcTemplate jdbcTemplate) {

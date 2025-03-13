@@ -15,7 +15,7 @@ import java.util.UUID;
 @Repository
 public class UserSaverRepository implements UserService {
     private final JdbcConnection jdbcConnection;
-    private static final String SQL_QUERY_SAVE = "INSERT INTO users (username, password, email, updated_at, role) VALUES (?, ?, ?, ?, ?)";
+    private static final String SQL_QUERY_SAVE = "INSERT INTO users (username, password,role) VALUES (?, ?, ?)";
     private static final String SQL_QUERY_FIND_BY_ID = "SELECT * FROM users WHERE id = ?";
 
     public UserSaverRepository(JdbcConnection jdbcConnection) {
@@ -30,9 +30,7 @@ public class UserSaverRepository implements UserService {
             PreparedStatement preparedStatement = connection.prepareStatement(SQL_QUERY_SAVE);
             preparedStatement.setString(1, userSaveRequestForm.getUsername());
             preparedStatement.setString(2, userSaveRequestForm.getPassword());
-            preparedStatement.setString(3, userSaveRequestForm.getEmail());
-            preparedStatement.setTimestamp(4, Timestamp.valueOf(userSaveRequestForm.getDateOfUpdate()));
-            preparedStatement.setString(5, "ROLE_CLIENT");
+            preparedStatement.setString(3, "ROLE_CLIENT");
             preparedStatement.executeUpdate();
             preparedStatement.close();
             connection.close();

@@ -15,7 +15,8 @@ public class OrderItemsRowMapper implements RowMapper<OrderItemsResponse> {
                 rs.getObject("order_id", UUID.class),
                 rs.getObject("product_id", UUID.class),
                 rs.getInt("quantity"),
-                rs.getBigDecimal("price")
+                rs.getBigDecimal("price"),
+                rs.getString("product_name")
         );
     }
 }

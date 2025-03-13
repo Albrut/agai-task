@@ -2,10 +2,7 @@ package kg.nurtelecom.backend_application.payload.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
 
 public class UserSaveRequestForm {
     @NotBlank(message = "Username is required")

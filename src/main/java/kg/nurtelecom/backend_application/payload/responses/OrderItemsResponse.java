@@ -8,5 +8,6 @@ public record OrderItemsResponse(
         UUID orderId,
         UUID productId,
         Integer quantity,
-        BigDecimal price
+        BigDecimal price,
+        String productName
 ) {}

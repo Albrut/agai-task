@@ -16,7 +16,7 @@ public class OrderRowMapper implements RowMapper<OrderResponse> {
                 rs.getObject("user_id", UUID.class),
                 rs.getBoolean("is_delivered"),
                 rs.getString("delivery_address"),
-                rs.getString("usernameOfOwner")
+                rs.getString("username_of_owner")
         );
     }
 }
