@@ -1,4 +1,4 @@
-package kg.nurtelecom.backend_application.utils;
+package kg.nurtelecom.backend_application.security;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;

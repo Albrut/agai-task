@@ -1,7 +1,7 @@
 package kg.nurtelecom.backend_application.controllers.api;
 
 import kg.nurtelecom.backend_application.services.AuthService;
-import kg.nurtelecom.backend_application.utils.JwtUtil;
+import kg.nurtelecom.backend_application.security.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;

@@ -1,7 +1,7 @@
 package kg.nurtelecom.backend_application.security.filters;
 
 
-import kg.nurtelecom.backend_application.utils.JwtUtil;
+import kg.nurtelecom.backend_application.security.JwtUtil;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
