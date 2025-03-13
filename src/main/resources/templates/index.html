@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,10 +13,16 @@
     <div class="logo">Admin Panel</div>
     <ul class="nav">
         <li><a href="/" class="active">Dashboard</a></li>
-        <li><a href="/admin/orders">Orders</a></li>
-        <li><a href="/admin/products">Products</a></li>
-        <li><a href="/admin/users">Users</a></li>
-        <li><a href="/admin/logout">Logout</a></li>
+        <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin/orders">Orders</a></li >
+        <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin/products">Products</a></li>
+        <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin/users">Users</a></li>
+        <li sec:authorize="hasRole('ROLE_CLIENT')"><a href="/user/orders-create"> Create Order</a></li>
+        <li>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn-menu"><i></i> Logout</button>
+            </form>
+        </li>
+
     </ul>
 </div>
 
