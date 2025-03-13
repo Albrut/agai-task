@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>User Administration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/users.css}"/>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body>
+<div class="sidebar">
+    <div class="logo">
+        <h3>Admin Panel</h3>
+    </div>
+    <ul class="nav">
+        <li><a href="/home" class="active">Dashboard</a></li>
+        <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin/orders">Orders</a></li>
+        <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin/products">Products</a></li>
+        <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin/users">Users</a></li>
+        <li sec:authorize="hasRole('ROLE_CLIENT')"><a href="/user/orders"> Create Order</a></li>
+        <li>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn-menu"><i></i> Logout</button>
+            </form>
+        </li>
+    </ul>
+</div>
+
+<div class="main-content">
+    <h1 class="my-4">User List</h1>
+    <table class="table table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.username}">Username</td>
+            <td th:text="${user.role}">Role</td>
+            <td>
+                <form th:action="@{'/admin/users/delete-user/' + ${user.username}}" method="post"
+                      style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/admin/users/create" class="btn btn-success">Create New User</a>
+</div>
+
+</body>
+</html>

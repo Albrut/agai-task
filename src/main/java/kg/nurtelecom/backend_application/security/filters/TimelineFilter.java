@@ -17,6 +17,6 @@ public class TimelineFilter extends OncePerRequestFilter {
         long start = System.currentTimeMillis();
         filterChain.doFilter(request, response);
         long duration = System.currentTimeMillis() - start;
-        System.out.println("Request to " + request.getRequestURI() + " took " + duration + " ms");
+        logger.info("Request to " + request.getRequestURI() + " took " + duration + " ms");
     }
 }
