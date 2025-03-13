@@ -12,12 +12,12 @@ import java.nio.file.Paths;
 @RequestMapping("/uploads")
 public class FileController {
 
-    private final String uploadDir = "uploads";
+    private static final String UPLOAD_DIR = "uploads";
 
     @GetMapping()
     public ResponseEntity<Resource> getFile(@RequestParam String filename) {
         try {
-            Path filePath = Paths.get(uploadDir).resolve(filename).normalize();
+            Path filePath = Paths.get(UPLOAD_DIR).resolve(filename).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if (resource.exists() && resource.isReadable()) {
                 return ResponseEntity.status(HttpStatus.OK).body(resource);

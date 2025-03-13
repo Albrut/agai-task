@@ -5,7 +5,11 @@ import kg.nurtelecom.backend_application.payload.requests.UserSaveRequestForm;
 import kg.nurtelecom.backend_application.services.UserService;
 import org.springframework.stereotype.Repository;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Repository

@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Order</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/order-create.css}">
 </head>
 <body>
 <div class="container">
     <h1 class="my-4">Select Products for Order</h1>
-    <form th:action="@{/admin/orders/create}" th:object="${orderItemsDTO}" method="post">
+    <form id="orderForm" th:action="@{/admin/orders/create}" th:object="${orderItemsDTO}" method="post">
         <table class="table table-bordered">
             <thead class="thead-light">
             <tr>
@@ -47,7 +48,10 @@
                     <input type="number"
                            th:name="'orderItemsRequests[' + ${iter.index} + '].quantity'"
                            value="1" min="1"
-                           class="form-control" style="width: 80px;">
+                           class="form-control quantity-input"
+                           style="width: 80px;"
+                           th:attr="data-stock=${product.stock}">
+                    <div class="error-message">Quantity exceeds available stock!</div>
                 </td>
             </tr>
             </tbody>
@@ -70,20 +74,9 @@
             <label class="form-check-label" for="create-delivered" id="delivery-label">Order not delivered</label>
         </div>
 
-
         <button type="submit" class="btn btn-success">Create Order</button>
     </form>
 </div>
-<script>
-    function updateDeliveryLabel() {
-        let checkbox = document.getElementById("create-delivered");
-        let label = document.getElementById("delivery-label");
-        label.textContent = checkbox.checked ? "Order already delivered" : "Order not delivered";
-    }
-
-    window.onload = updateDeliveryLabel;
-
-
-</script>
+<script th:src="@{/js/order-create.js}"></script>
 </body>
 </html>

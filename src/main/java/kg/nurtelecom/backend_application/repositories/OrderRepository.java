@@ -37,13 +37,15 @@ public class OrderRepository implements OrderService {
     private final static String DELETE_ORDER_ITEMS_BY_ORDER_ID_QUERY = "DELETE FROM order_items WHERE order_id = ?";
     private final static String INSERT_ORDER_ITEM_QUERY = "INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)";
     private final static String UPDATE_ORDER_TOTAL_QUERY = "UPDATE orders SET total_amount = ?, is_delivered = ?, delivery_address = ? WHERE order_id = ?";
-
+    private final static String UPDATE_PRODUCT_STOCK_BY_ID_QUERY =     "UPDATE products SET stock = stock - ? WHERE product_id = ? AND stock >= ?";
+    ;
     private final JdbcTemplate jdbcTemplate;
 
     public OrderRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Transactional
     @Override
     public UUID createOrder(List<OrderItemsRequest> orderItemsRequests, UUID userId, BigDecimal totalAmount, boolean isDelivered, String deliveryAddress) {
         UUID newOrderId = jdbcTemplate.queryForObject(CREATE_ORDER_QUERY, UUID.class,
@@ -51,6 +53,7 @@ public class OrderRepository implements OrderService {
 
         for (OrderItemsRequest item : orderItemsRequests) {
             jdbcTemplate.update(INSERT_ORDER_ITEM_QUERY, newOrderId, item.getProductId(), item.getQuantity(), item.getPrice());
+            jdbcTemplate.update(UPDATE_PRODUCT_STOCK_BY_ID_QUERY, item.getQuantity(), item.getProductId());
         }
         return newOrderId;
     }

@@ -5,48 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Order</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .card-container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            transition: transform 0.2s;
-        }
+    <link rel="stylesheet" th:href="@{/css/order-edit.css}">
 
-        .card-container:hover {
-            transform: translateY(-3px);
-        }
-
-        h1 {
-            color: #212529;
-            border-bottom: 2px solid #4CAF50;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 2rem 0;
-        }
-
-        .table thead {
-            background: #f8f9fa;
-        }
-
-        .table th, .table td {
-            padding: 1.2rem 1.5rem;
-            vertical-align: middle;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .actions {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-    </style>
 </head>
 <body>
 <div class="container card-container">
@@ -76,7 +36,6 @@
         </div>
 
         <h2>Order Items</h2>
-        <!-- Button to open the modal for adding a product -->
         <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#addProductModal">
             Add Product
         </button>
@@ -91,10 +50,8 @@
             </tr>
             </thead>
             <tbody>
-            <!-- Используйте *{orderItems} для доступа к списку в orderDetails -->
             <tr th:each="item, iterStat : *{orderItems}">
                 <td>
-                    <!-- Используйте __${iterStat.index}__ для подстановки индекса -->
                     <input type="text"
                            th:field="*{orderItems[__${iterStat.index}__].productId}"
                            class="form-control" placeholder="Product ID" readonly/>
@@ -154,7 +111,8 @@
                         <td th:text="${prod.stock}">10</td>
                         <td th:text="${prod.productType}">Phones</td>
                         <td>
-                            <img th:src="@{'/uploads?filename=' + ${prod.imageUrl}}" alt="Image" style="width:100px; height:100px;">
+                            <img th:src="@{'/uploads?filename=' + ${prod.imageUrl}}" alt="Image"
+                                 style="width:100px; height:100px;">
                         </td>
                         <td>
                             <button type="button"
@@ -196,43 +154,6 @@
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-<script>
-    let newRowIndex = document.querySelectorAll("#orderItemsTable tbody tr").length;
-
-    function addProductFromModal(button) {
-        let prodId = button.getAttribute("data-prod-id");
-        let prodPrice = button.getAttribute("data-prod-price");
-        let prodName = button.getAttribute("data-prod-name");
-        let newRowHtml = `
-      <tr>
-        <td>
-          <input type="text" name="orderItems[${newRowIndex}].productId" class="form-control" value="${prodId}" readonly>
-        </td>
-        <td>
-          <input type="number" name="orderItems[${newRowIndex}].quantity" class="form-control" value="1" min="1">
-        </td>
-        <td>
-          <input type="text" name="orderItems[${newRowIndex}].price" class="form-control" value="${prodPrice}" readonly>
-        </td>
-        <td>
-          <button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)">Delete</button>
-        </td>
-      </tr>
-    `;
-        document.querySelector("#orderItemsTable tbody").insertAdjacentHTML("beforeend", newRowHtml);
-        newRowIndex++;
-        hideAddProductModal();
-    }
-
-
-    function removeRow(button) {
-        let row = button.closest('tr');
-        row.remove();
-    }
-
-    function hideAddProductModal() {
-        $('#addProductModal').modal('hide');
-    }
-</script>
+<script th:src="@{/js/order-edit.js}"></script>
 </body>
 </html>
