@@ -24,7 +24,7 @@ public class ProductRepository implements ProductService {
     private static final String SQL_QUERY_CREATE_PRODUCT = "INSERT INTO products (name, description, price, stock, image_url, product_type) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String SQL_QUERY_GET_ALL_PRODUCTS = "SELECT * FROM products";
     private static final String SQL_QUERY_UPDATE_PRODUCT_BY_ID = "UPDATE products SET name = ?, description = ?, price = ?, stock = ?,  product_type = ?::product_type, image_url = ? WHERE product_id = ?";
-    private static final String SQL_QURY_GET_PRODUCT_BY_ID = "SELECT * FROM products WHERE product_id = ?";
+    private static final String SQL_QUERY_GET_PRODUCT_BY_ID = "SELECT * FROM products WHERE product_id = ?";
     private static final String SQL_QUERY_DELETE_PRODUCT_BY_ID = "DELETE FROM products WHERE product_id = ?";
 
     public ProductRepository(JdbcConnection jdbcConnection) {
@@ -100,7 +100,7 @@ public class ProductRepository implements ProductService {
     public ProductResponse getProductById(UUID id) {
         try {
             Connection connection = jdbcConnection.getConnection();
-            PreparedStatement ps = connection.prepareStatement(SQL_QURY_GET_PRODUCT_BY_ID);
+            PreparedStatement ps = connection.prepareStatement(SQL_QUERY_GET_PRODUCT_BY_ID);
             ps.setObject(1, id);
             ResultSet rs = ps.executeQuery();
 
