@@ -1,4 +1,4 @@
-package kg.nurtelecom.backend_application.controllers.spring_mvc;
+package kg.nurtelecom.backend_application.controllers.mvc;
 
 import jakarta.validation.Valid;
 import kg.nurtelecom.backend_application.facades.ProductFacade;

@@ -1,25 +1,35 @@
 package kg.nurtelecom.backend_application.payload.requests;
-
 import java.math.BigDecimal;
 import java.util.UUID;
 
 public class OrderItemsRequest {
+
     private UUID id;
-    private UUID orderId;
     private UUID productId;
     private Integer quantity;
     private BigDecimal price;
+
+    public OrderItemsRequest(
+            UUID id,
+            UUID productId,
+            Integer quantity,
+            BigDecimal price
+    ) {
+        this.id = id;
+        this.productId = productId;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
+    public OrderItemsRequest() {
+    }
 
     public UUID getId() {
         return id;
     }
 
-    public UUID getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(UUID orderId) {
-        this.orderId = orderId;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public UUID getProductId() {
@@ -44,20 +54,5 @@ public class OrderItemsRequest {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "OrderItemsRequest{" +
-                "id=" + id +
-                ", orderId=" + orderId +
-                ", productId=" + productId +
-                ", quantity=" + quantity +
-                ", price=" + price +
-                '}';
     }
 }

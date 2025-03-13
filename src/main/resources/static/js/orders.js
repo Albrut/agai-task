@@ -18,3 +18,12 @@ function confirmDelete() {
 document.querySelector('.modal-overlay').addEventListener('click', (e) => {
     if (e.target === e.currentTarget) hideModal();
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.btn-delete').forEach(function(button) {
+        button.addEventListener('click', function() {
+            let orderId = button.getAttribute('data-order-id');
+            showDeleteModal(orderId);
+        });
+    });
+});

@@ -42,7 +42,7 @@
             <td class="actions">
                 <a th:href="@{/admin/orders/{id}(id=${order.id})}" class="action-btn btn-view">Details</a>
                 <a th:href="@{/admin/orders/edit/{id}(id=${order.id})}" class="action-btn btn-edit">Edit</a>
-                <button th:attr="onclick='showDeleteModal(\'' + ${order.id} + '\')'" class="action-btn btn-delete">
+                <button class="action-btn btn-delete" th:data-order-id="${order.id}">
                     Delete
                 </button>
             </td>
@@ -60,10 +60,11 @@
             <form id="deleteForm" th:action="@{/admin/orders/delete/{id}(id='UUID_PLACEHOLDER')}" method="post">
                 <input type="hidden" name="_method" value="POST">
             </form>
+
         </div>
     </div>
 </div>
 
-<script th:src="@{/js/order-create.js}"></script>
+<script th:src="@{/js/orders.js}"></script>
 </body>
 </html>

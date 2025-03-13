@@ -80,11 +80,12 @@ public class OrderFacadeSupport implements OrderFacade {
             if (item == null) {
                 continue;
             }
-            OrderItemsRequest request = new OrderItemsRequest();
-            request.setId(item.orderItemId());
-            request.setProductId(item.productId());
-            request.setQuantity(item.quantity());
-            request.setPrice(item.price());
+            OrderItemsRequest request = new OrderItemsRequest(
+                    item.orderItemId(),
+                    item.productId(),
+                    item.quantity(),
+                    item.price()
+            );
             requests.add(request);
         }
 

@@ -17,6 +17,5 @@ public interface OrderService {
     List<OrderItemsResponse> getOrderItemsByOrderId(UUID orderId);
     void updateOrderById(UUID id, List<OrderItemsRequest> orderItemsRequests, boolean isDelivered, String deliveryAddress);
     List<OrderResponse> searchOrdersByUserId(UUID userId);
-    List<OrderItemsRequest> convertToOrderItemsRequest(List<OrderItemsResponse> orderItemsResponses);
 
 }

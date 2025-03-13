@@ -1,4 +1,4 @@
-package kg.nurtelecom.backend_application.controllers.spring_mvc;
+package kg.nurtelecom.backend_application.controllers.mvc;
 
 import jakarta.validation.Valid;
 import kg.nurtelecom.backend_application.facades.OrderFacade;
@@ -53,9 +53,9 @@ public class OrderController {
     @PostMapping("/edit/{id}")
     public String updateOrder(
             @PathVariable UUID id,
-            @Valid @ModelAttribute("orderDetails") OrderDetailsRequest orderDetails
-    ) {
-        return orderFacade.updateOrder(id, orderDetails);
+            @Valid @ModelAttribute("orderDetails") OrderDetailsRequest orderDetails) {
+
+    return orderFacade.updateOrder(id, orderDetails);
     }
 
     @GetMapping("/create")
