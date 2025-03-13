@@ -36,8 +36,12 @@ public class ImageValidatorSupport implements ConstraintValidator<ImageValidator
     }
 
     private boolean isValidContentType(String contentType) {
-        return Arrays.stream(allowedTypes)
-                .anyMatch(type -> type.equalsIgnoreCase(contentType));
+        for (String type : allowedTypes) {
+            if (type.equalsIgnoreCase(contentType)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean fail(ConstraintValidatorContext context, String message) {

@@ -79,8 +79,12 @@ public class AdminOrderFacadeSupport implements AdminOrderFacade {
     public String updateOrder(UUID id, OrderDetailsRequest orderDetails) {
         List<OrderItemsRequest> requests = new ArrayList<>();
 
-        List<OrderItemsResponse> orderItems = orderDetails.orderItems() != null
-                ? orderDetails.orderItems() : Collections.emptyList();
+        List<OrderItemsResponse> orderItems;
+        if (orderDetails.orderItems() != null) {
+            orderItems = orderDetails.orderItems();
+        } else {
+            orderItems = Collections.emptyList();
+        }
 
         for (OrderItemsResponse item : orderItems) {
             if (item == null) {
