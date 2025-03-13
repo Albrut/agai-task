@@ -1,6 +1,7 @@
 package kg.nurtelecom.backend_application.payload.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 
@@ -10,6 +11,7 @@ public class UserSaveRequestForm {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotBlank(message = "Password is required")
+    @Min(6)
     private String password;
 
 

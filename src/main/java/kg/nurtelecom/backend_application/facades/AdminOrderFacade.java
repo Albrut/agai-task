@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import java.util.List;
 import java.util.UUID;
 
-public interface OrderFacade {
+public interface AdminOrderFacade {
     String getAllOrders(Model model);
     String getOrderById(UUID id, Model model);
     String deleteOrder(UUID id);

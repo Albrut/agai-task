@@ -1,7 +1,7 @@
-package kg.nurtelecom.backend_application.controllers.mvc;
+package kg.nurtelecom.backend_application.controllers.mvc.admin;
 
 import jakarta.validation.Valid;
-import kg.nurtelecom.backend_application.facades.OrderFacade;
+import kg.nurtelecom.backend_application.facades.AdminOrderFacade;
 import kg.nurtelecom.backend_application.payload.requests.OrderItemsRequestsDTO;
 import kg.nurtelecom.backend_application.payload.requests.OrderDetailsRequest;
 import org.springframework.stereotype.Controller;
@@ -17,37 +17,37 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/admin/orders")
-public class OrderController {
+public class AdminOrderController {
 
-    private final OrderFacade orderFacade;
+    private final AdminOrderFacade adminOrderFacade;
 
-    public OrderController(OrderFacade orderFacade) {
-        this.orderFacade = orderFacade;
+    public AdminOrderController(AdminOrderFacade adminOrderFacade) {
+        this.adminOrderFacade = adminOrderFacade;
     }
 
     @GetMapping
     public String getAllOrders(Model model) {
-        return orderFacade.getAllOrders(model);
+        return adminOrderFacade.getAllOrders(model);
     }
 
     @GetMapping("/{id}")
     public String getOrderById(@PathVariable UUID id, Model model) {
-        return orderFacade.getOrderById(id, model);
+        return adminOrderFacade.getOrderById(id, model);
     }
 
     @PostMapping("/delete/{id}")
     public String deleteOrder(@PathVariable UUID id) {
-        return orderFacade.deleteOrder(id);
+        return adminOrderFacade.deleteOrder(id);
     }
 
     @GetMapping("/search")
     public String searchOrders(@RequestParam UUID userId, Model model) {
-        return orderFacade.searchOrders(userId, model);
+        return adminOrderFacade.searchOrders(userId, model);
     }
 
     @GetMapping("/edit/{id}")
     public String editOrderForm(@PathVariable UUID id, Model model) {
-        return orderFacade.editOrderForm(id, model);
+        return adminOrderFacade.editOrderForm(id, model);
     }
 
     @PostMapping("/edit/{id}")
@@ -55,16 +55,16 @@ public class OrderController {
             @PathVariable UUID id,
             @Valid @ModelAttribute("orderDetails") OrderDetailsRequest orderDetails) {
 
-    return orderFacade.updateOrder(id, orderDetails);
+    return adminOrderFacade.updateOrder(id, orderDetails);
     }
 
     @GetMapping("/create")
     public String getCreateOrderPage(Model model) {
-        return orderFacade.getCreateOrderPage(model);
+        return adminOrderFacade.getCreateOrderPage(model);
     }
 
     @PostMapping("/create")
     public String createOrder(@Valid @ModelAttribute OrderItemsRequestsDTO orderItemsDTO) {
-        return orderFacade.createOrder(orderItemsDTO);
+        return adminOrderFacade.createOrder(orderItemsDTO);
     }
 }

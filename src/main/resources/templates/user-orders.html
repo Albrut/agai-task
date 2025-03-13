@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Orders</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/orders.css}">
+</head>
+<body>
+<div class="container">
+    <h1 class="my-4">My Orders</h1>
+    <table class="table table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th>Order ID</th>
+            <th>Total Amount</th>
+            <th>Delivery Address</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}">Order ID</td>
+            <td th:text="${order.totalAmount}">Total</td>
+            <td th:text="${order.deliveryAddress}">Address</td>
+            <td>
+                <span th:if="${order.isDelivered}" class="badge badge-success">Delivered</span>
+                <span th:if="${!order.isDelivered}" class="badge badge-warning">In Transit</span>
+            </td>
+            <td>
+                <a th:href="@{'/user/orders/' + ${order.id}}" class="btn btn-info btn-sm">Details</a>
+                <a th:href="@{'/user/orders/edit/' + ${order.id}}" class="btn btn-primary btn-sm">Edit</a>
+                <form th:action="@{'/user/orders/delete/' + ${order.id}}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/user/orders/create" class="btn btn-success">Create New Order</a>
+    <a href = "/home" class="btn btn-success"> Return Back</a>
+</div>
+</body>
+</html>

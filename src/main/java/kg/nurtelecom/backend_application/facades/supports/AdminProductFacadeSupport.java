@@ -1,6 +1,6 @@
 package kg.nurtelecom.backend_application.facades.supports;
 
-import kg.nurtelecom.backend_application.facades.ProductFacade;
+import kg.nurtelecom.backend_application.facades.AdminProductFacade;
 import kg.nurtelecom.backend_application.payload.requests.ProductRequestForm;
 import kg.nurtelecom.backend_application.payload.requests.ProductSaveRequest;
 import kg.nurtelecom.backend_application.payload.responses.ProductResponse;
@@ -17,12 +17,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
-class ProductFacadeSupport implements ProductFacade {
+class AdminProductFacadeSupport implements AdminProductFacade {
 
     private final ProductService productService;
     private static final String UPLOAD_DIR = "uploads";
 
-    public ProductFacadeSupport(ProductService productService) {
+    public AdminProductFacadeSupport(ProductService productService) {
         this.productService = productService;
     }
 

@@ -1,7 +1,8 @@
 package kg.nurtelecom.backend_application.facades.supports;
 
-import kg.nurtelecom.backend_application.facades.OrderFacade;
-import kg.nurtelecom.backend_application.facades.ProductFacade;
+import kg.nurtelecom.backend_application.facades.AdminOrderFacade;
+import kg.nurtelecom.backend_application.facades.AdminProductFacade;
+import kg.nurtelecom.backend_application.facades.UserOrderFacade;
 import kg.nurtelecom.backend_application.payload.requests.OrderItemsRequest;
 import kg.nurtelecom.backend_application.payload.requests.OrderItemsRequestsDTO;
 import kg.nurtelecom.backend_application.payload.requests.OrderDetailsRequest;
@@ -9,7 +10,10 @@ import kg.nurtelecom.backend_application.payload.responses.OrderItemsResponse;
 import kg.nurtelecom.backend_application.payload.responses.OrderResponse;
 import kg.nurtelecom.backend_application.payload.responses.ProductResponse;
 import kg.nurtelecom.backend_application.services.OrderService;
+import kg.nurtelecom.backend_application.services.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
@@ -20,14 +24,15 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
-public class OrderFacadeSupport implements OrderFacade {
-
+public class AdminOrderFacadeSupport implements AdminOrderFacade {
+    private final UserService userService;
     private final OrderService orderService;
-    private final ProductFacade productFacade;
+    private final AdminProductFacade adminProductFacade;
 
-    public OrderFacadeSupport(OrderService orderService, ProductFacade productFacade) {
+    public AdminOrderFacadeSupport(OrderService orderService, AdminProductFacade adminProductFacade, UserService userService) {
         this.orderService = orderService;
-        this.productFacade = productFacade;
+        this.userService = userService;
+        this.adminProductFacade = adminProductFacade;
     }
 
     @Override
@@ -65,7 +70,7 @@ public class OrderFacadeSupport implements OrderFacade {
         List<OrderItemsResponse> orderItems = orderService.getOrderItemsByOrderId(id);
         OrderDetailsRequest orderDetails = new OrderDetailsRequest(order, orderItems);
         model.addAttribute("orderDetails", orderDetails);
-        List<ProductResponse> products = productFacade.getAllProducts();
+        List<ProductResponse> products = adminProductFacade.getAllProducts();
         model.addAttribute("availableProducts", products);
         return "order-edit";
     }
@@ -101,7 +106,7 @@ public class OrderFacadeSupport implements OrderFacade {
 
     @Override
     public String getCreateOrderPage(Model model) {
-        List<ProductResponse> products = productFacade.getAllProducts();
+        List<ProductResponse> products = adminProductFacade.getAllProducts();
         model.addAttribute("products", products);
         model.addAttribute("orderItemsDTO", new OrderItemsRequestsDTO());
         return "order-create";
@@ -114,10 +119,11 @@ public class OrderFacadeSupport implements OrderFacade {
         for (OrderItemsRequest item : orderItemsRequests) {
             totalAmount = totalAmount.add(item.getPrice().multiply(new BigDecimal(item.getQuantity())));
         }
-        UUID userUuid = UUID.fromString("2b7c846f-f8c7-4673-a183-8b6cb00d658e");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UUID id = (userService.findIdByUsername(authentication.getName()));
         UUID newOrderId = orderService.createOrder(
                 orderItemsRequests,
-                userUuid,
+                id,
                 totalAmount,
                 orderItemsDTO.isDelivered(),
                 orderItemsDTO.getDeliveryAddress()
@@ -186,7 +192,8 @@ public class OrderFacadeSupport implements OrderFacade {
         for (OrderItemsRequest item : orderItemsRequests) {
             totalAmount = totalAmount.add(item.getPrice().multiply(new BigDecimal(item.getQuantity())));
         }
-        UUID userUuid = UUID.fromString("2b7c846f-f8c7-4673-a183-8b6cb00d658e");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UUID userUuid = userService.findIdByUsername(authentication.getName());
         UUID newOrderId = orderService.createOrder(
                 orderItemsRequests,
                 userUuid,

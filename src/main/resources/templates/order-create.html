@@ -10,7 +10,8 @@
 <body>
 <div class="container">
     <h1 class="my-4">Select Products for Order</h1>
-    <form id="orderForm" th:action="@{/admin/orders/create}" th:object="${orderItemsDTO}" method="post">
+    <form id="orderForm" th:action="@{${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '/admin/orders/create' : '/user/orders/create'}}"
+          th:object="${orderItemsDTO}" method="post">
         <table class="table table-bordered">
             <thead class="thead-light">
             <tr>

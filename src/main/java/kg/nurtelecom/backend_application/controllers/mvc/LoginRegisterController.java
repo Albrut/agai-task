@@ -2,7 +2,7 @@ package kg.nurtelecom.backend_application.controllers.mvc;
 
 import jakarta.validation.Valid;
 import kg.nurtelecom.backend_application.payload.requests.UserSaveRequestForm;
-import kg.nurtelecom.backend_application.services.UserService;
+import kg.nurtelecom.backend_application.services.AuthService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping
 public class LoginRegisterController {
 
-    private final UserService userService;
+    private final AuthService authService;
 
-    public LoginRegisterController(UserService userService) {
-        this.userService = userService;
+    public LoginRegisterController(AuthService authService) {
+        this.authService = authService;
     }
 
     @GetMapping("/login")
@@ -40,8 +40,13 @@ public class LoginRegisterController {
             return "registration";
         }
 
-        userService.save(userSaveRequestForm);
-        model.addAttribute("successMessage", "Регистрация успешна! Теперь вы можете войти.");
+       if (authService.userExist(userSaveRequestForm.getUsername())){
+           return "redirect:/login";
+       }
+       if (authService.createUser(userSaveRequestForm.getUsername(), userSaveRequestForm.getPassword()) > 0){
+           return "redirect:/login";
+       }
+        model.addAttribute("successMessage", "Registration Successful");
         return "login";
     }
 }

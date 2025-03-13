@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Регистрация</title>
+  <title>Registration</title>
   <link rel="stylesheet" th:href="@{/css/login-register.css}">
 </head>
 <body>
 <div class="container">
-  <h2>Регистрация</h2>
+  <h2>Registration</h2>
 
   <div th:if="${successMessage}" class="success-message">
     <p th:text="${successMessage}"></p>
@@ -14,20 +14,20 @@
 
   <form th:action="@{/registration}" method="post" th:object="${userSaveRequest}">
     <div class="input-group">
-      <label for="username">Логин</label>
+      <label for="username">Login</label>
       <input type="text" id="username" th:field="*{username}" required>
     </div>
 
     <div class="input-group">
-      <label for="password">Пароль</label>
+      <label for="password">Password</label>
       <input type="password" id="password" th:field="*{password}" required>
     </div>
 
 
-    <button type="submit">Зарегистрироваться</button>
+    <button type="submit">Register</button>
   </form>
 
-  <p>Уже есть аккаунт? <a th:href="@{/login}">Войти</a></p>
+  <p>Have registered? <a th:href="@{/login}">Login</a></p>
 </div>
 </body>
 </html>

@@ -4,6 +4,7 @@ import kg.nurtelecom.backend_application.services.AuthService;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -13,8 +14,12 @@ public class AuthRepository implements AuthService {
     private final PasswordEncoder passwordEncoder;
 
     private static final String SQL_CHECK_USER = "SELECT COUNT(*) FROM users WHERE username = ?";
+
+    private static final String SQL_CREATE_AUTHORITY =
+            "INSERT INTO authorities (user_id, role) VALUES (?, ?)";
+
     private static final String SQL_CREATE_USER =
-            "INSERT INTO users (user_id, username, password, role) VALUES (?, ?, ?, ?)";
+            "INSERT INTO users (username, password) VALUES ( ?, ?) RETURNING user_id";
 
     public AuthRepository(JdbcClient jdbcClient, PasswordEncoder passwordEncoder) {
         this.jdbcClient = jdbcClient;
@@ -29,16 +34,15 @@ public class AuthRepository implements AuthService {
                 .single();
         return count > 0;
     }
-
+    @Transactional
     @Override
     public int createUser(String username, String password) {
-       return jdbcClient.sql(SQL_CREATE_USER)
-                .params(
-                        UUID.randomUUID(),
-                        username,
-                        passwordEncoder.encode(password),
-                        "ROLE_CLIENT"
-                )
-                .update();
+
+        UUID userId = jdbcClient.sql(
+                SQL_CREATE_USER).params(username, passwordEncoder.encode(password)).query(UUID.class).single();
+        int authoritiesInserted = jdbcClient.sql(SQL_CREATE_AUTHORITY).params(userId, "ROLE_CLIENT").update();
+
+        return authoritiesInserted;
     }
+
 }

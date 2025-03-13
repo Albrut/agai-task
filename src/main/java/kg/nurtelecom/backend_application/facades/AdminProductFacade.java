@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.UUID;
 
-public interface ProductFacade {
+public interface AdminProductFacade {
     List<ProductResponse> getAllProducts();
     ProductResponse getProductById(UUID id);
     void saveProduct(ProductSaveRequest productSaveRequest, MultipartFile imageFile);

@@ -11,7 +11,7 @@ public class JwtUtil {
 
     public static String generateToken(String username) {
         long nowMillis = System.currentTimeMillis();
-        long expMillis = nowMillis + 3600000; // 1 час
+        long expMillis = nowMillis + 3600000;
         String header = "{\"alg\":\"HS256\",\"typ\":\"JWT\"}";
         String payload = "{\"sub\":\"" + username + "\",\"iat\":" + (nowMillis/1000) + ",\"exp\":" + (expMillis/1000) + "}";
         String encodedHeader = Base64.getUrlEncoder().withoutPadding().encodeToString(header.getBytes(StandardCharsets.UTF_8));

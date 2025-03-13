@@ -1,7 +1,7 @@
-package kg.nurtelecom.backend_application.controllers.mvc;
+package kg.nurtelecom.backend_application.controllers.mvc.admin;
 
 import jakarta.validation.Valid;
-import kg.nurtelecom.backend_application.facades.ProductFacade;
+import kg.nurtelecom.backend_application.facades.AdminProductFacade;
 import kg.nurtelecom.backend_application.payload.requests.ProductRequestForm;
 import kg.nurtelecom.backend_application.payload.requests.ProductSaveRequest;
 import kg.nurtelecom.backend_application.payload.responses.ProductResponse;
@@ -22,17 +22,17 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/admin/products")
-public class ProductController {
+public class AdminProductController {
 
-    private final ProductFacade productFacade;
+    private final AdminProductFacade adminProductFacade;
 
-    public ProductController(ProductFacade productFacade) {
-        this.productFacade = productFacade;
+    public AdminProductController(AdminProductFacade adminProductFacade) {
+        this.adminProductFacade = adminProductFacade;
     }
 
     @GetMapping
     public String getAllProducts(Model model) {
-        List<ProductResponse> products = productFacade.getAllProducts();
+        List<ProductResponse> products = adminProductFacade.getAllProducts();
         model.addAttribute("products", products);
         return "products";
     }
@@ -50,13 +50,13 @@ public class ProductController {
             return "error-page";
         }
 
-        productFacade.saveProduct(productSaveRequest, imageFile);
+        adminProductFacade.saveProduct(productSaveRequest, imageFile);
         return "redirect:/admin/products";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditProductForm(@PathVariable("id") UUID id, Model model) {
-        ProductResponse product = productFacade.getProductById(id);
+        ProductResponse product = adminProductFacade.getProductById(id);
         model.addAttribute("productRequestForm", product);
         return "edit-product";
     }
@@ -70,13 +70,13 @@ public class ProductController {
             return "error-page";
         }
 
-        productFacade.updateProduct(id, productRequestForm, imageFile);
+        adminProductFacade.updateProduct(id, productRequestForm, imageFile);
         return "redirect:/admin/products";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") UUID id) {
-        productFacade.deleteProduct(id);
+        adminProductFacade.deleteProduct(id);
         return "redirect:/admin/products";
     }
 }

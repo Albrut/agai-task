@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:sc="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,13 +10,14 @@
 <body>
 
 <div class="sidebar">
-    <div class="logo">Admin Panel</div>
+    <div class="logo" sec:authorize="hasRole('ROLE_ADMIN')">Admin Panel</div>
+    <div class="logo" sec:authorize="hasRole('ROLE_CLIENT')">Client Panel</div>
     <ul class="nav">
-        <li><a href="/" class="active">Dashboard</a></li>
+        <li><a href="/home" class="active">Dashboard</a></li>
         <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin/orders">Orders</a></li >
         <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin/products">Products</a></li>
         <li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/admin/users">Users</a></li>
-        <li sec:authorize="hasRole('ROLE_CLIENT')"><a href="/user/orders-create"> Create Order</a></li>
+        <li sec:authorize="hasRole('ROLE_CLIENT')"><a href="/user/orders"> Create Order</a></li>
         <li>
             <form th:action="@{/logout}" method="post" class="logout-form">
                 <button type="submit" class="btn-menu"><i></i> Logout</button>
@@ -29,8 +30,9 @@
 <div class="main-content">
     <div class="container">
         <h1>Dashboard</h1>
-        <p>Welcome to the admin panel</p>
-        <div class="btn-back">
+        <p sec:authorize = "hasRole('ROLE_ADMIN')">Welcome to the admin panel</p>
+        <p sec:authorize = "hasRole('ROLE_CLIENT')">Welcome to the client panel</p>
+        <div class="btn-back" sec:authorize = "hasRole('ROLE_ADMIN')">
             <a href="/admin/products" class="btn btn-primary">Go to Products</a>
         </div>
     </div>

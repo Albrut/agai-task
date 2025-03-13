@@ -51,7 +51,13 @@ public class OrderRepository implements OrderService {
 
 
 
-    private final static String SEARCH_ORDERS_BY_USER_ID_QUERY = "SELECT * FROM orders WHERE user_id = ?";
+    private final static String SEARCH_ORDERS_BY_USER_ID_QUERY =
+            "SELECT orders.order_id, orders.total_amount, orders.delivery_address, " +
+                    "orders.is_delivered, orders.user_id, users.username AS username_of_owner " +
+                    "FROM orders " +
+                    "JOIN users ON orders.user_id = users.user_id " +
+                    "WHERE orders.user_id = ?";
+
     private final static String INSERT_ORDER_ITEM_QUERY = "INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)";
     private final static String UPDATE_ORDER_TOTAL_QUERY = "UPDATE orders SET total_amount = ?, is_delivered = ?, delivery_address = ? WHERE order_id = ?";
     private final static String UPDATE_PRODUCT_STOCK_BY_ID_QUERY =     "UPDATE products SET stock = stock - ? WHERE product_id = ? AND stock >= ?";
