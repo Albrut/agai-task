@@ -124,9 +124,9 @@ public class ProductRepository implements ProductService {
             Connection connection = jdbcConnection.getConnection();
             PreparedStatement ps = connection.prepareStatement(SQL_QUERY_DELETE_PRODUCT_BY_ID);
             ps.setObject(1, id);
-            int affectedRows = ps.executeUpdate();
-            System.out.println(affectedRows);
-
+            ps.executeUpdate();
+            ps.close();
+            connection.close();
         } catch (SQLException sqlException) {
             throw new RuntimeException("Cannot delete product by id " + id, sqlException);
         }

@@ -6,13 +6,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-public class UserRequest implements UserDetails {
+public class UserAuthRequest implements UserDetails {
 
     private String username;
     private String password;
     private List<SimpleGrantedAuthority> authorities;
 
-    public UserRequest(String username, String password, List<SimpleGrantedAuthority> authorities) {
+    public UserAuthRequest(String username, String password, List<SimpleGrantedAuthority> authorities) {
         this.username = username;
         this.password = password;
         this.authorities = authorities;

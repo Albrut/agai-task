@@ -1,62 +1,75 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const orderForm = document.getElementById("orderForm");
-    const submitButton = orderForm.querySelector("button[type='submit']");
-    const checkboxes = orderForm.querySelectorAll("input[type='checkbox'][name^='orderItemsRequests']");
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('orderForm');
+    if (!form) return;
 
-    const messageDiv = document.createElement("div");
-    messageDiv.style.color = "red";
-    messageDiv.style.marginBottom = "10px";
-    orderForm.insertBefore(messageDiv, orderForm.firstChild);
+    const messagesDiv = document.getElementById('formMessages');
+    const checkboxes = form.querySelectorAll('.product-checkbox');
+    const quantityInputs = form.querySelectorAll('.quantity-input');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const isAdmin = /*[[${#authorization.expression('hasRole(''ROLE_ADMIN'')')}]]*/ false;
 
-    if (checkboxes.length === 0) {
-        submitButton.disabled = true;
-        messageDiv.textContent = "No available products. Please create a product.";
-    } else {
-        messageDiv.textContent = "";
-    }
+    updateSubmitState();
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updateSubmitState);
+    });
+
+    quantityInputs.forEach(input => {
+        input.addEventListener('input', validateQuantity);
+    });
+
+    form.addEventListener('submit', handleSubmit);
 
     function updateSubmitState() {
-        let isAnySelected = Array.from(checkboxes).some(chk => chk.checked);
-        submitButton.disabled = !isAnySelected;
+        const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+        submitBtn.disabled = !anyChecked;
     }
 
-    if (checkboxes.length > 0) {
-        updateSubmitState();
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener("change", updateSubmitState);
-        });
-    }
+    function validateQuantity(e) {
+        const input = e.target;
+        const stock = parseInt(input.getAttribute('data-stock'), 10);
+        const errorDiv = input.nextElementSibling;
 
-    orderForm.addEventListener("submit", function(e) {
-        if (checkboxes.length === 0) {
-            e.preventDefault();
-            alert("No available products. Please create a product before placing an order.");
-            return false;
+        if (input.value > stock) {
+            errorDiv.style.display = 'block';
+            input.classList.add('is-invalid');
+        } else {
+            errorDiv.style.display = 'none';
+            input.classList.remove('is-invalid');
         }
-        let hasSelectedProduct = Array.from(checkboxes).some(chk => chk.checked);
-        if (!hasSelectedProduct) {
-            e.preventDefault();
-            alert("Please select at least one product before creating an order.");
-            return false;
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        messagesDiv.style.display = 'none';
+
+        const selectedProducts = Array.from(checkboxes).filter(checkbox => checkbox.checked);
+        if (selectedProducts.length === 0) {
+            showMessage('Please select at least one product');
+            return;
         }
 
         let valid = true;
-        const quantityInputs = orderForm.querySelectorAll(".quantity-input");
-        quantityInputs.forEach(function(input) {
-            const stock = parseInt(input.getAttribute("data-stock"), 10);
-            const quantity = parseInt(input.value, 10);
-            const errorDiv = input.nextElementSibling;
-            if (quantity > stock) {
+        quantityInputs.forEach(input => {
+            const stock = parseInt(input.getAttribute('data-stock'), 10);
+            if (input.value > stock) {
                 valid = false;
-                errorDiv.style.display = "block";
-            } else {
-                errorDiv.style.display = "none";
+                input.classList.add('is-invalid');
+                input.nextElementSibling.style.display = 'block';
             }
         });
+
         if (!valid) {
-            e.preventDefault();
-            alert("Some products have a quantity greater than the available stock. Please correct the values.");
-            return false;
+            showMessage('Some quantities exceed available stock');
+            return;
         }
-    });
+
+        form.submit();
+    }
+
+    function showMessage(message) {
+        messagesDiv.textContent = message;
+        messagesDiv.style.display = 'block';
+        window.scrollTo(0, 0);
+    }
 });

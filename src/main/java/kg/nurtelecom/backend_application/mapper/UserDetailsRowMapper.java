@@ -1,6 +1,6 @@
 package kg.nurtelecom.backend_application.mapper;
 
-import kg.nurtelecom.backend_application.payload.requests.UserRequest;
+import kg.nurtelecom.backend_application.payload.requests.UserAuthRequest;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +17,6 @@ public class UserDetailsRowMapper implements RowMapper<UserDetails> {
         String password = rs.getString("password");
         String role = rs.getString("role");
 
-        return new UserRequest(username, password, List.of(new SimpleGrantedAuthority(role)));
+        return new UserAuthRequest(username, password, List.of(new SimpleGrantedAuthority(role)));
     }
 }
