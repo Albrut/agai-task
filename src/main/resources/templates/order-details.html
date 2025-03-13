@@ -18,12 +18,12 @@
 
         <p>
             <strong>Delivery Address:</strong>
-            <span th:text="${order.deliveryAddress}">Skichik, 12</span>
+            <span th:text="${order.deliveryAddress}">Pushkin, 12</span>
         </p>
 
         <p>Order Status:
-            <span th:if="${order.isDelivered}" th:text="Delivered"></span>
-            <span th:if="${!order.isDelivered}" th:text="In Transit">️</span>
+            <span th:if="${order.isDelivered}" th:text="'Delivered'"></span>
+            <span th:if="${!order.isDelivered}" th:text="'In Transit'">️</span>
         </p>
     </div>
 
