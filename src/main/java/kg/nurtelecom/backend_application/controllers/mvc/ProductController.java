@@ -21,7 +21,7 @@ import java.util.UUID;
 
 
 @Controller
-@RequestMapping("/products")
+@RequestMapping("/admin/products")
 public class ProductController {
 
     private final ProductFacade productFacade;
@@ -51,7 +51,7 @@ public class ProductController {
         }
 
         productFacade.saveProduct(productSaveRequest, imageFile);
-        return "redirect:/products";
+        return "redirect:/admin/products";
     }
 
     @GetMapping("/edit/{id}")
@@ -71,12 +71,12 @@ public class ProductController {
         }
 
         productFacade.updateProduct(id, productRequestForm, imageFile);
-        return "redirect:/products";
+        return "redirect:/admin/products";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") UUID id) {
         productFacade.deleteProduct(id);
-        return "redirect:/products";
+        return "redirect:/admin/products";
     }
 }

@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <h1 class="my-4">Add New Product</h1>
-    <form th:object="${productRequestForm}" th:action="@{/products/add}" method="post" enctype="multipart/form-data">
+    <form th:object="${productRequestForm}" th:action="@{/admin/products/add}" method="post" enctype="multipart/form-data">
 
         <div class="form-group">
             <label for="name">Product Name</label>
@@ -54,7 +54,7 @@
     </form>
 
     <div class="mt-4">
-        <a href="/products" class="btn btn-primary">Back to Products</a>
+        <a href="/admin/products" class="btn btn-primary">Back to Products</a>
     </div>
 </div>
 

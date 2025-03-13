@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+  <link rel="stylesheet" th:href="@{/css/index.css}">
+
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="logo">Admin Panel</div>
+    <ul class="nav">
+        <li><a href="/" class="active">Dashboard</a></li>
+        <li><a href="/admin/orders">Orders</a></li>
+        <li><a href="/admin/products">Products</a></li>
+        <li><a href="/admin/users">Users</a></li>
+        <li><a href="/admin/logout">Logout</a></li>
+    </ul>
+</div>
+
+<div class="main-content">
+    <div class="container">
+        <h1>Dashboard</h1>
+        <p>Welcome to the admin panel</p>
+        <div class="btn-back">
+            <a href="/admin/products" class="btn btn-primary">Go to Products</a>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
